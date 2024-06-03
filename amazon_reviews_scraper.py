@@ -23,15 +23,27 @@ def get_amazon_reviews(url, num_pages):
     for page in range(1, num_pages + 1):
         page_url = f"{url}&pageNumber={page}"
         response = requests.get(page_url, headers=headers)
+        
+        if response.status_code != 200:
+            print(f"Failed to retrieve page {page}: Status code {response.status_code}")
+            continue
+        
         soup = BeautifulSoup(response.content, 'html.parser')
         
         review_blocks = soup.find_all('div', {'data-hook': 'review'})
         
+        if not review_blocks:
+            print(f"No reviews found on page {page}")
+            continue
+        
         for review in review_blocks:
-            title = review.find('a', {'data-hook': 'review-title'}).text.strip()
-            rating = review.find('i', {'data-hook': 'review-star-rating'}).text.strip().split(' ')[0]
-            body = review.find('span', {'data-hook': 'review-body'}).text.strip()
-            reviews.append({"Title": title, "Rating": float(rating), "Review": body})
+            try:
+                title = review.find('a', {'data-hook': 'review-title'}).text.strip()
+                rating = review.find('i', {'data-hook': 'review-star-rating'}).text.strip().split(' ')[0]
+                body = review.find('span', {'data-hook': 'review-body'}).text.strip()
+                reviews.append({"Title": title, "Rating": float(rating), "Review": body})
+            except AttributeError:
+                print(f"Failed to parse a review on page {page}")
     
     return pd.DataFrame(reviews)
 
