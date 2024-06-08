@@ -1,6 +1,6 @@
 # Amazon Reviews Scraper
 
-This repository is created for the Mathematical Software class. This repository created for a Python script that scrapes Amazon product reviews,This project scrapes reviews from a specified Amazon product URL and performs statistical analysis on the collected reviews.
+This repository is created for the mathematical software class. This project is a Python script that scrapes Amazon product reviews scrapes reviews from a specified Amazon product URL and performs statistical analysis on the collected reviews.
 
 # Requirements
 - Python 3.6 or higher
